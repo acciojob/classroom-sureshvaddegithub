@@ -1,5 +1,6 @@
 package com.driver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,14 +58,14 @@ public class StudentController {
     @GetMapping("/get-students-by-teacher-name/{teacher}")
     public ResponseEntity<List<String>> getStudentsByTeacherName(@PathVariable String teacher){
         List<String> students = null; // Assign list of student by calling service layer method
-          students = studentService.getStudentsByTeacherName(teacher);
+          students =new ArrayList<>( studentService.getStudentsByTeacherName(teacher));
         return new ResponseEntity<>(students, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-all-students")
     public ResponseEntity<List<String>> getAllStudents(){
         List<String> students = null; // Assign list of student by calling service layer method
-        students = studentService.getAllStudents();
+        students =new ArrayList<>( studentService.getAllStudents());
         return new ResponseEntity<>(students, HttpStatus.CREATED);
     }
 

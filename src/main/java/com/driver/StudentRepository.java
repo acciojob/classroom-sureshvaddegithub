@@ -16,19 +16,27 @@ public class StudentRepository {
 
     void addStudentToDb(Student student)
     {
+        if(!studentList.contains(student))
         studentList.add(student);
     }
 
     void addTeachertoDb(Teacher teacher)
     {
+        if(!teachersList.contains(teacher))
         teachersList.add(teacher);
     }
 
     void addStudentTeacherPairToDb(String studentName,String teacherName) {
         if (teachersList.contains(teacherName) && studentList.contains(studentName)) {
-            if (studentTeacherPair.containsKey(teacherName)) {
+            int studentscount =0;
+            for(Teacher teacher:teachersList){
+                if(teacher.getName().equals(teacherName))
+                    studentscount = teacher.getNumberOfStudents();
+            }
+
+            if (studentTeacherPair.containsKey(teacherName) && studentTeacherPair.get(teacherName).size()<studentscount) {
                 studentTeacherPair.get(teacherName).add(studentName);
-            } else {
+            } else if(!studentTeacherPair.containsKey(teacherName)){
                 List<String> studentNames = new ArrayList<>();
                 studentNames.add(studentName);
                 studentTeacherPair.put(teacherName, studentNames);
