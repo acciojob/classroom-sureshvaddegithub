@@ -48,9 +48,9 @@ public class StudentRepository {
                     studentscount = teacher.getNumberOfStudents();
             }
 
-            if (studentTeacherPair.containsKey(teacherName) && studentTeacherPair.get(teacherName).size()<studentscount) {
+            if (studentTeacherPair.containsKey(teacherName) ) {
                 studentTeacherPair.get(teacherName).add(studentName);
-            } else if(!studentTeacherPair.containsKey(teacherName)){
+            } else {
                 List<String> studentNames = new ArrayList<>();
                 studentNames.add(studentName);
                 studentTeacherPair.put(teacherName, studentNames);
