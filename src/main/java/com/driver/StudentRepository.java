@@ -7,8 +7,8 @@ import java.util.*;
 @Repository
 public class StudentRepository {
 
-    Set<Student> studentList = new HashSet<>();
-    Set<Teacher> teachersList = new HashSet<>();
+    List<Student> studentList = new ArrayList<>();
+    List<Teacher> teachersList = new ArrayList<>();
 
     HashMap<String, List<String>> studentTeacherPair = new HashMap<>();
 
@@ -98,7 +98,6 @@ public class StudentRepository {
               break;
           }
       }
-
       studentTeacherPair.remove(name);
     }
 
