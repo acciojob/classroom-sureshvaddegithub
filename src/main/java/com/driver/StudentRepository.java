@@ -2,32 +2,46 @@ package com.driver;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class StudentRepository {
 
-    ArrayList<Student> studentList = new ArrayList<>();
-    ArrayList<Teacher> teachersList = new ArrayList<>();
+    Set<Student> studentList = new HashSet<>();
+    Set<Teacher> teachersList = new HashSet<>();
 
     HashMap<String, List<String>> studentTeacherPair = new HashMap<>();
 
     void addStudentToDb(Student student)
     {
-        if(!studentList.contains(student))
+
         studentList.add(student);
     }
 
     void addTeachertoDb(Teacher teacher)
     {
-        if(!teachersList.contains(teacher))
+
         teachersList.add(teacher);
     }
 
     void addStudentTeacherPairToDb(String studentName,String teacherName) {
-        if (teachersList.contains(teacherName) && studentList.contains(studentName)) {
+        boolean teacherpresent = false;
+        boolean studentpresent = false;
+
+        for(Student s:studentList){
+            if(s.getName().equals(studentName)) {
+                studentpresent = true;
+                break;
+            }
+        }
+        for(Teacher t:teachersList){
+            if(t.getName().equals(teacherName)) {
+                teacherpresent = true;
+                break;
+            }
+        }
+
+        if (studentpresent && teacherpresent) {
             int studentscount =0;
             for(Teacher teacher:teachersList){
                 if(teacher.getName().equals(teacherName))
@@ -65,8 +79,9 @@ public class StudentRepository {
     List<String> getStudentsByTeacherNameFromDb(String name){
         List<String> students = new ArrayList<>();
         if(studentTeacherPair.containsKey(name)){
-            for(String names:studentTeacherPair.get(name))
+            for(String names:studentTeacherPair.get(name)) {
                 students.add(names);
+            }
         }
         return students;
     }
@@ -78,11 +93,14 @@ public class StudentRepository {
         return students;
     }
     void deleteTeacherByNameFromDb(String name){
-      for(int i = 0 ;i< teachersList.size();i++){
-          if(teachersList.get(i).getName().equals(name)){
-              teachersList.remove(i);
+
+      for(Teacher t:teachersList){
+          if(t.getName().equals(name)) {
+              teachersList.remove(t);
+              break;
           }
       }
+
       studentTeacherPair.remove(name);
     }
 
