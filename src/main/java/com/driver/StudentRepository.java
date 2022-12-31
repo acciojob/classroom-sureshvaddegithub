@@ -7,47 +7,23 @@ import java.util.*;
 @Repository
 public class StudentRepository {
 
-    List<Student> studentList = new ArrayList<>();
-    List<Teacher> teachersList = new ArrayList<>();
+    HashMap<String,Student> studentList = new HashMap<>();
+    HashMap<String,Teacher> teachersList = new HashMap<>();
 
     HashMap<String, List<String>> studentTeacherPair = new HashMap<>();
 
-    void addStudentToDb(Student student)
+   public void addStudentToDb(Student student)
     {
-
-        studentList.add(student);
+        studentList.put(student.getName(),student);
     }
 
-    void addTeachertoDb(Teacher teacher)
+    public void addTeachertoDb(Teacher teacher)
     {
-
-        teachersList.add(teacher);
+        teachersList.put(teacher.getName(),teacher);
     }
 
-    void addStudentTeacherPairToDb(String studentName,String teacherName) {
-        boolean teacherpresent = false;
-        boolean studentpresent = false;
-
-        for(Student s:studentList){
-            if(s.getName().equals(studentName)) {
-                studentpresent = true;
-                break;
-            }
-        }
-        for(Teacher t:teachersList){
-            if(t.getName().equals(teacherName)) {
-                teacherpresent = true;
-                break;
-            }
-        }
-
-        if (studentpresent && teacherpresent) {
-            int studentscount =0;
-            for(Teacher teacher:teachersList){
-                if(teacher.getName().equals(teacherName))
-                    studentscount = teacher.getNumberOfStudents();
-            }
-
+   public void addStudentTeacherPairToDb(String studentName,String teacherName) {
+        if (studentList.containsKey(studentName) && teachersList.containsKey(teacherName)) {
             if (studentTeacherPair.containsKey(teacherName) ) {
                 studentTeacherPair.get(teacherName).add(studentName);
             } else {
@@ -55,54 +31,45 @@ public class StudentRepository {
                 studentNames.add(studentName);
                 studentTeacherPair.put(teacherName, studentNames);
             }
-
         }
     }
-        Student getStudentByNameFromDb(String name)
+   public Student getStudentByNameFromDb(String name)
         {
-            for(Student s:studentList){
-                if(s.getName().equals(name))
-                    return s;
-            }
-            return null;
+           return studentList.get(name);
         }
 
-    Teacher getTeacherByNameFromDb(String name)
+    public Teacher getTeacherByNameFromDb(String name)
     {
-        for(Teacher s:teachersList){
-            if(s.getName().equals(name))
-                return s;
-        }
-        return null;
+        return teachersList.get(name);
     }
 
-    List<String> getStudentsByTeacherNameFromDb(String name){
+   public List<String> getStudentsByTeacherNameFromDb(String name){
+       return studentTeacherPair.get(name);
+    }
+    public List<String> getAllStudentsFromDb(){
         List<String> students = new ArrayList<>();
-        if(studentTeacherPair.containsKey(name)){
-           students= new ArrayList<>(studentTeacherPair.get(name));
+        for(String s:studentList.keySet()){
+            students.add(s);
         }
         return students;
     }
-    List<String> getAllStudentsFromDb(){
-        List<String> students = new ArrayList<>();
-        for(Student s:studentList){
-            students.add(s.getName());
-        }
-        return students;
-    }
-    void deleteTeacherByNameFromDb(String name){
-
-      for(Teacher t:teachersList){
-          if(t.getName().equals(name)) {
-              teachersList.remove(t);
-              break;
-          }
-      }
-      studentTeacherPair.remove(name);
+    public void deleteTeacherByNameFromDb(String name){
+       teachersList.remove(name);
+       if(studentTeacherPair.containsKey(name)){
+           for(String s:studentTeacherPair.get(name)){
+               studentList.remove(s);
+           }
+           studentTeacherPair.remove(name);
+       }
     }
 
-    void deleteAllTeachers(){
+    public void deleteAllTeachers(){
         teachersList.clear();
-        studentTeacherPair.clear();
+       for(String names:studentTeacherPair.keySet()){
+           for(String students:studentTeacherPair.get(names)){
+               studentList.remove(students);
+           }
+       }
+       studentTeacherPair.clear();
     }
 }
