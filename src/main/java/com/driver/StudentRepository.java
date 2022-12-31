@@ -79,9 +79,7 @@ public class StudentRepository {
     List<String> getStudentsByTeacherNameFromDb(String name){
         List<String> students = new ArrayList<>();
         if(studentTeacherPair.containsKey(name)){
-            for(String names:studentTeacherPair.get(name)) {
-                students.add(names);
-            }
+           students= new ArrayList<>(studentTeacherPair.get(name));
         }
         return students;
     }

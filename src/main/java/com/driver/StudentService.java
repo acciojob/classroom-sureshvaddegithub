@@ -36,8 +36,8 @@ public class StudentService {
     }
 
     List<String> getStudentsByTeacherName(String name){
-        List<String> students= new ArrayList<>( studentRepository.getStudentsByTeacherNameFromDb(name));
-        return students;
+        List<String> listOfStudents= new ArrayList<>( studentRepository.getStudentsByTeacherNameFromDb(name));
+        return listOfStudents;
     }
     List<String> getAllStudents(){
         List<String> students = new ArrayList<>( studentRepository.getAllStudentsFromDb());
